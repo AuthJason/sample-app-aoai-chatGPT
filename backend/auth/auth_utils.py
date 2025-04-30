@@ -5,7 +5,14 @@ def get_authenticated_user_details(request_headers):
     if "X-Ms-Client-Principal-Id" not in request_headers.keys():
         ## if it's not, assume we're in development mode and return a default user
         from . import sample_user
-        raw_user_object = sample_user.sample_user
+        raw_user_object = {
+    'X-Ms-Client-Principal-Id': 'dev-user-id',
+    'X-Ms-Client-Principal-Name': 'dev-user@example.com',
+    'X-Ms-Client-Principal-Idp': 'LOCAL',
+    'X-Ms-Token-Aad-Id-Token': 'fake-token',
+    'X-Ms-Client-Principal': 'base64encodedvalue'
+}
+
     else:
         ## if it is, get the user details from the EasyAuth headers
         raw_user_object = {k:v for k,v in request_headers.items()}
